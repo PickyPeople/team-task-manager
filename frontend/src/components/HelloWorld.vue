@@ -1,43 +1,16 @@
-<script setup>
-import { ref } from 'vue'
-
-defineProps({
-  msg: String,
-})
-
-const count = ref(0)
-</script>
-
-<template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
-  </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-  <p>
-    Learn more about IDE Support for Vue in the
-    <a
-      href="https://vuejs.org/guide/scaling-up/tooling.html#ide-support"
-      target="_blank"
-      >Vue Docs Scaling up Guide</a
-    >.
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
-</template>
-
-<style scoped>
-.read-the-docs {
-  color: #888;
-}
-</style>
+<template lang="pug">
+  div.container.mt-5
+    h1.mb-4.text-primary 로그인 화면
+  
+    form
+      .mb-3
+        label.form-label(for="email") 이메일
+        input#email.form-control(type="email" placeholder="이메일 입력")
+      
+      .mb-3
+        label.form-label(for="password") 비밀번호
+        input#password.form-control(type="password" placeholder="비밀번호 입력")
+      
+      button.btn.btn-primary(type="submit") 로그인
+  </template>
+  
