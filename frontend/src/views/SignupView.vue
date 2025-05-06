@@ -29,6 +29,7 @@
   <script setup>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
+  import api from '../lib/axios.js'
   
   const router = useRouter()
   const name = ref('')
@@ -36,15 +37,23 @@
   const password = ref('')
   const confirmPassword = ref('')
   
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (password.value !== confirmPassword.value) {
       alert('비밀번호가 일치하지 않습니다.')
       return
     }
   
-    // 회원가입 데이터 확인용 (나중에 API 연동)
-    console.log('회원가입 정보:', name.value, email.value, password.value)
-    alert('회원가입 요청됨!')
+    try {
+      const res = await api.post('/signup', {
+        name: name.value,
+        email: email.value,
+        password: password.value,
+        password_confirmation: confirmPassword.value
+      })
+      router.push('/login');
+    } catch(err) {
+      console.error('회원가입 실패: ', err.response?.data || err.message);
+    }
   }
   
   const goToLogin = () => {
