@@ -58,6 +58,6 @@ const goToSignup = () => {
 
 <style scoped>
 .errMsg {
-  color: red;
+  color: #FF9A9A;
 }
 </style>
