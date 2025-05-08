@@ -44,7 +44,7 @@ const handleLogin = async () => {
     console.log("로그인 성공: ", res);
     const token = res.data.token;
     localStorage.setItem("token", token);
-    router.push("/workspace");
+    router.push("/workspaces");
   } catch (err) {
     console.error("로그인 실패:", err.response?.data || err.message);
     successLogin.value = true;
