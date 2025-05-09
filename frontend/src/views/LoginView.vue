@@ -22,7 +22,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import api from "../lib/axios";
+import { login } from "../api/authApi";
 
 const router = useRouter();
 const email = ref("");
@@ -30,21 +30,12 @@ const password = ref("");
 const successLogin = ref(false);
 
 const handleLogin = async () => {
-  if (!email.value || !password.value) {
-    alert("이메일과 비밀번호를 입력해주세요.");
-    return;
-  }
-
   try {
-    const res = await api.post("/login", {
-      email: email.value,
-      password: password.value,
-    });
+    const res = await login(email.value, password.value)
 
-    console.log("로그인 성공: ", res);
-    const token = res.data.token;
-    localStorage.setItem("token", token);
-    router.push("/workspaces");
+    if(res) {
+      router.push("/workspaces");
+    }
   } catch (err) {
     console.error("로그인 실패:", err.response?.data || err.message);
     successLogin.value = true;

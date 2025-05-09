@@ -4,6 +4,7 @@
       div.card-body
         h5.card-title {{ workspace.name }}
         p.card-text {{ workspace.description }}
+        p.card-text 작성자: {{ workspace.owner }}
         router-link.btn.btn-outline-primary(:to="`/workspaces/${workspace.id}/kanban`") 칸반 보기
 </template>
 

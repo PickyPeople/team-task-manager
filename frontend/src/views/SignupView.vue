@@ -29,7 +29,7 @@
   <script setup>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import api from '../lib/axios.js'
+  import { signup } from '../api/authApi.js'
   
   const router = useRouter()
   const name = ref('')
@@ -40,16 +40,11 @@
   const handleSignup = async () => {
     if (password.value !== confirmPassword.value) {
       alert('비밀번호가 일치하지 않습니다.')
-      return
+      return 
     }
   
     try {
-      const res = await api.post('/signup', {
-        name: name.value,
-        email: email.value,
-        password: password.value,
-        password_confirmation: confirmPassword.value
-      })
+      await signup(name.value, email.value, password.value)
       router.push('/login');
     } catch(err) {
       console.error('회원가입 실패: ', err.response?.data || err.message);
