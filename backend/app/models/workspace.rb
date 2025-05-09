@@ -1,5 +1,7 @@
 class Workspace < ApplicationRecord
-  has_many :workspace_users
-  has_many :users, through: :workspace_users
-  has_many :tasks
+  belongs_to :user  # 💡 User와 연결되어 있음
+
+  validates :name, presence: true
+  validates :description, presence: true
+  validates :owner, presence: true
 end

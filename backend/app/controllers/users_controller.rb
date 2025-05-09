@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+
+  skip_before_action :authenticate_user!, only: [:signup, :login]
   # POST /signup
   def signup
     user = User.new(user_params)
@@ -13,9 +15,11 @@ class UsersController < ApplicationController
   # POST /login
   def login
     user = User.find_by(email: params[:email])
-    if user&.authenticate(params[:password])
+    
+    # Devise에서 제공하는 메서드: valid_password?
+    if user&.valid_password?(params[:password])
       token = JsonWebToken.encode(user_id: user.id)
-      render json: { token: token, user: user }
+      render json: { token: token, user: user }, status: :ok
     else
       render json: { error: 'Invalid email or password' }, status: :unauthorized
     end

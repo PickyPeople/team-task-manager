@@ -7,6 +7,7 @@ export const login = async (email, password) => {
     })
 
     localStorage.setItem('token', res.data.token);
+    console.log(res.data)
 
     return res.data
   } catch(error) {
@@ -26,7 +27,7 @@ export const signup = async (name, email, password) => {
 
     return res.data;
   } catch(err) {
-    console.error('회원가입 실패:', error.response?.data || error.message)
+    console.error('회원가입 실패:', err.res?.data || err.message)
     throw err
   }
 }

@@ -32,8 +32,10 @@ const successLogin = ref(false);
 const handleLogin = async () => {
   try {
     const res = await login(email.value, password.value)
-    
-    router.push("/workspaces");
+
+    if(res) {
+      router.push("/workspaces");
+    }
   } catch (err) {
     console.error("로그인 실패:", err.response?.data || err.message);
     successLogin.value = true;
