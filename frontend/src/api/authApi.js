@@ -13,3 +13,20 @@ export const login = async (email, password) => {
     console.error('로그인 실패')
   }
 }
+
+export const signup = async (name, email, password) => {
+  try {
+    const res = await api.post('/signup', {
+      name,
+      email,
+      password
+    })
+
+    console.log(res.data);
+
+    return res.data;
+  } catch(err) {
+    console.error('회원가입 실패:', error.response?.data || error.message)
+    throw err
+  }
+}
