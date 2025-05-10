@@ -36,6 +36,17 @@ class WorkspacesController < ApplicationController
     render json: workspaces, status: :ok
   end
 
+  def destroy
+    workspace = Workspace.find_by(id: params[:id], user_id: @current_user.id)
+
+    if workspace
+      workspace.destroy
+      render json: { message: "워크스페이스가 삭제되었습니다." }, status: :ok
+    else
+      render json: { error: "워크스페이스를 찾을 수 없습니다." }, status: :not_found
+    end
+  end
+
   private
 
   def workspace_params
