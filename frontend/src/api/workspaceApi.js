@@ -18,7 +18,6 @@ export const createWorkspace = async (name, description) => {
 
 export const fetchWorkspaces = async () => {
   try {
-    console.log("워크스페이스 목록 가져오기 요청")
     const response = await api.get('/workspaces')
     console.log("워크스페이스 목록:", response.data)
     return response.data
