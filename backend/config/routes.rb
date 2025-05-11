@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   post '/login', to: 'users#login'
   get '/me', to: 'users#me'
   post "/logout", to: "users#logout"
- resources :workspaces, only: [:create, :index, :show, :destroy]
+ 
+  resources :workspaces, only: [:create, :index, :show, :destroy]
 end

@@ -13,7 +13,7 @@ class WorkspacesController < ApplicationController
       return
     end
 
-    # ✅ user를 명시적으로 설정
+    
     workspace = Workspace.new(workspace_params)
     workspace.user = @current_user
     workspace.owner = current_user.name
@@ -36,6 +36,44 @@ class WorkspacesController < ApplicationController
   def index
     workspaces = Workspace.where(user_id: @current_user.id)
     render json: workspaces, status: :ok
+  end
+
+  def show
+    workspace = Workspace.find_by(id: params[:id], user_id: @current_user.id)
+
+    if workspace
+      render json: {
+        id: workspace.id,
+        name: workspace.name,
+        description: workspace.description,
+        owner: workspace.owner,
+        created_at: workspace.created_at,
+        updated_at: workspace.updated_at
+      }, status: :ok
+    else
+      render json: { error: "워크스페이스를 찾을 수 없습니다." }, status: :not_found
+    end
+  end
+
+  def update
+    workspace = Workspace.find_by(id: params[:id], user_id: @current_user.id)
+
+    if workspace.nil?
+      render json: { error: "워크스페이스를 찾을 수 없습니다." }, status: :not_found
+      return
+    end
+
+    if workspace.update(workspace_params)
+      render json: {
+        id: workspace.id,
+        name: workspace.name,
+        description: workspace.description,
+        owner: workspace.owner,
+        updated_at: workspace.updated_at
+      }, status: :ok
+    else
+      render json: { error: workspace.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
