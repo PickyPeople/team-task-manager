@@ -4,4 +4,6 @@ class Workspace < ApplicationRecord
   validates :name, presence: true
   validates :description, presence: true
   validates :owner, presence: true
+
+  has_many :tasks, dependent: :destroy
 end

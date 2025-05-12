@@ -8,24 +8,18 @@ div.container.mt-5
 
   p.mb-3 {{ workspace.description }}
   
-  h4.mt-4 Task 목록
-  ul.list-group
-    li.list-group-item(
-      v-for="task in tasks" 
-      :key="task.id"
-    )
-      span {{ task.title }}
+  TaskList(:workspaceId="workspace.id", v-if="workspace.id")
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { fetchWorkspaceDetail, updateWorkspace, deleteWorkspace } from '../api/workspaceApi'
+import TaskList from '../components/TaskList.vue'
 
 const route = useRoute()
 const router = useRouter()
 const workspace = ref({})
-const tasks = ref([])
 
 const fetchWorkspaceDetailData = async () => {
   try {
@@ -64,19 +58,8 @@ const handleDelete = async () => {
   }
 }
 
-// const loadTasks = async () => {
-//   try {
-//     const response = await api.get(`/workspaces/${route.params.id}/tasks`)
-//     tasks.value = response.data
-//   } catch (error) {
-//     console.error("Task 정보를 불러오지 못했습니다.")
-//   }
-// }
-
-
 onMounted(() => {
-  fetchWorkspaceDetailData()
-  // loadTasks()
+  fetchWorkspaceDetailData();
 })
 </script>
 

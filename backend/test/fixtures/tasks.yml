@@ -3,13 +3,9 @@
 one:
   title: MyString
   description: MyText
-  done: false
-  workspace: one
-  assignee: 1
+  status: MyString
 
 two:
   title: MyString
   description: MyText
-  done: false
-  workspace: two
-  assignee: 1
+  status: MyString

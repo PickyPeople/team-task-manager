@@ -9,5 +9,7 @@ Rails.application.routes.draw do
   get '/me', to: 'users#me'
   post "/logout", to: "users#logout"
  
-  resources :workspaces, only: [:create, :index, :show, :update, :destroy]
+  resources :workspaces, only: [:create, :index, :show, :update, :destroy] do
+    resources :tasks, only: [:index, :create, :update, :destroy, :show]
+  end  
 end

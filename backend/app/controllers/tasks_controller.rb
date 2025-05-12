@@ -1,0 +1,63 @@
+class TasksController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_workspace
+  before_action :set_task, only: [:show, :update, :destroy]
+
+  # 특정 워크스페이스의 Task 목록 조회
+  def index
+    tasks = @workspace.tasks
+    render json: tasks, status: :ok
+  end
+
+  # Task 생성
+  def create
+    task = @workspace.tasks.build(task_params)
+    if task.save
+      render json: task, status: :created
+    else
+      render json: { error: task.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def show
+    render json: @task, status: :ok
+  end
+
+  # Task 수정
+  def update
+    if @task.update(task_params)
+      render json: @task, status: :ok
+    else
+      render json: { error: @task.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  # Task 삭제
+  def destroy
+    @task.destroy
+    render json: { message: "Task가 성공적으로 삭제되었습니다." }, status: :ok
+  end
+
+  private
+
+  # 특정 워크스페이스 찾기
+  def set_workspace
+    @workspace = Workspace.find_by(id: params[:workspace_id], user_id: @current_user.id)
+    if @workspace.nil?
+      render json: { error: "워크스페이스를 찾을 수 없습니다." }, status: :not_found
+    end
+  end
+
+  # 특정 Task 찾기
+  def set_task
+    @task = @workspace.tasks.find_by(id: params[:id])
+    if @task.nil?
+      render json: { error: "Task를 찾을 수 없습니다." }, status: :not_found
+    end
+  end
+
+  # Strong Parameters
+  def task_params
+    params.require(:task).permit(:title, :description, :status, :done, :assignee_id)
+  end
+end
