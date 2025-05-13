@@ -9,9 +9,13 @@ div.container
       div.d-flex.align-items-center
         div.circle(:class="getStatusClass(task.status)")
         span.ml-2 {{ task.title }} - {{ task.description }}
-      div
-        button.btn.btn-outline-warning.btn-sm(@click="handleEdit(task)") ✏️ 수정
-        button.btn.btn-outline-danger.btn-sm(@click="handleDelete(task.id)") 🗑️ 삭제
+      div.d-flex.align-items-center
+        select.form-select.form-select-sm.w-auto(v-model="task.status" @change="handleStatusChange(task)")
+          option(value="pending") 대기중
+          option(value="in-progress") 진행중
+          option(value="completed") 완료
+        button.btn.btn-outline-warning.btn-sm.ml-2(@click="handleEdit(task)") ✏️
+        button.btn.btn-outline-danger.btn-sm.ml-1(@click="handleDelete(task.id)") 🗑️
 </template>
 
 <script setup>
@@ -85,6 +89,22 @@ const handleDelete = async (taskId) => {
   }
 }
 
+const handleStatusChange = async (task) => {
+  console.log('태스크 상태 변경 시작!')
+  try {
+    const updatedTask = await updateTask(props.workspaceId, task.id, {
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      done: task.done
+    })
+    const index = tasks.value.findIndex(t => t.id === task.id);
+    tasks.value[index] = updatedTask;
+  } catch(err) {
+    return
+  }
+}
+
 const getStatusClass = (status) => {
   switch (status) {
     case "completed":
@@ -133,5 +153,9 @@ button {
 
 .circle-default {
   background-color: lightgray;
+}
+
+select {
+  font-size: 0.85rem;
 }
 </style>
