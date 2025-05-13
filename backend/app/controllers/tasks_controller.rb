@@ -25,6 +25,11 @@ class TasksController < ApplicationController
 
   # Task 수정
   def update
+    unless @workspace.user == @current_user
+      render json: { error: "수정 권한이 없습니다." }, status: :forbidden
+      return
+    end
+  
     if @task.update(task_params)
       render json: @task, status: :ok
     else
@@ -34,6 +39,11 @@ class TasksController < ApplicationController
 
   # Task 삭제
   def destroy
+    unless @workspace.user == @current_user
+      render json: { error: "삭제 권한이 없습니다." }, status: :forbidden
+      return
+    end
+
     @task.destroy
     render json: { message: "Task가 성공적으로 삭제되었습니다." }, status: :ok
   end
@@ -42,7 +52,7 @@ class TasksController < ApplicationController
 
   # 특정 워크스페이스 찾기
   def set_workspace
-    @workspace = Workspace.find_by(id: params[:workspace_id], user_id: @current_user.id)
+    @workspace = Workspace.find_by(id: params[:workspace_id])
     if @workspace.nil?
       render json: { error: "워크스페이스를 찾을 수 없습니다." }, status: :not_found
     end
