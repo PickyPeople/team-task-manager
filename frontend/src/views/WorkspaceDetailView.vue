@@ -8,77 +8,58 @@ div.container.mt-5
 
   p.mb-3 {{ workspace.description }}
   
-  h4.mt-4 Task 목록
-  ul.list-group
-    li.list-group-item(
-      v-for="task in tasks" 
-      :key="task.id"
-    )
-      span {{ task.title }}
+  TaskList(:workspaceId="workspace.id", v-if="workspace.id")
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import api from '../lib/axios'
+import { fetchWorkspaceDetail, updateWorkspace, deleteWorkspace } from '../api/workspaceApi'
+import TaskList from '../components/TaskList.vue'
 
 const route = useRoute()
 const router = useRouter()
 const workspace = ref({})
-const tasks = ref([])
 
-const loadWorkspace = async () => {
+const fetchWorkspaceDetailData = async () => {
   try {
-    const response = await api.get(`/workspaces/${route.params.id}`)
-    workspace.value = response.data
+    const data = await fetchWorkspaceDetail(route.params.id)
+    workspace.value = data
   } catch (error) {
     console.error("워크스페이스 정보를 불러오지 못했습니다.")
   }
 }
 
-// const loadTasks = async () => {
-//   try {
-//     const response = await api.get(`/workspaces/${route.params.id}/tasks`)
-//     tasks.value = response.data
-//   } catch (error) {
-//     console.error("Task 정보를 불러오지 못했습니다.")
-//   }
-// }
+const handleEdit = async () => {
+  const newName = prompt("새로운 제목을 입력하세요:", workspace.value.name)
+  const newDescription = prompt("새로운 설명을 입력하세요:", workspace.value.description)
+
+  if (newName && newDescription) {
+    try {
+      const updatedData = await updateWorkspace(route.params.id, newName, newDescription)
+      workspace.value.name = updatedData.name
+      workspace.value.description = updatedData.description
+      alert("워크스페이스가 수정되었습니다.")
+    } catch (error) {
+      alert("수정에 실패했습니다.")
+    }
+  }
+}
 
 const handleDelete = async () => {
   if (confirm("정말 삭제하시겠습니까?")) {
     try {
-      await api.delete(`/workspaces/${route.params.id}`)
+      await deleteWorkspace(route.params.id)
       alert("워크스페이스가 삭제되었습니다.")
-      router.push('/workspaces')
+      router.push('/')
     } catch (error) {
       alert("삭제에 실패했습니다.")
     }
   }
 }
 
-// const handleEdit = () => {
-//   const newName = prompt("새로운 제목을 입력하세요:", workspace.value.name)
-//   const newDescription = prompt("새로운 설명을 입력하세요:", workspace.value.description)
-  
-//   if (newName && newDescription) {
-//     workspace.value.name = newName
-//     workspace.value.description = newDescription
-
-//     api.put(`/workspaces/${route.params.id}`, {
-//       name: newName,
-//       description: newDescription
-//     }).then(() => {
-//       alert("워크스페이스가 수정되었습니다.")
-//     }).catch(() => {
-//       alert("수정에 실패했습니다.")
-//     })
-//   }
-// }
-
 onMounted(() => {
-  loadWorkspace()
-  // loadTasks()
+  fetchWorkspaceDetailData();
 })
 </script>
 

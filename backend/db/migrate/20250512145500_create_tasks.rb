@@ -3,10 +3,10 @@ class CreateTasks < ActiveRecord::Migration[8.0]
     create_table :tasks do |t|
       t.string :title
       t.text :description
-      t.boolean :done, default: false
-      t.references :workspace, null: false, foreign_key: true
+      t.string :status
+      t.integer :workspace_id
       t.integer :assignee_id
-      t.foreign_key :users, column: :assignee_id
+      t.boolean :done
 
       t.timestamps
     end

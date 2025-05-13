@@ -19,7 +19,7 @@ export const createWorkspace = async (name, description) => {
 export const fetchWorkspaces = async () => {
   try {
     const response = await api.get('/workspaces')
-    console.log("워크스페이스 목록:", response.data)
+    // console.log("워크스페이스 목록:", response.data)
     return response.data
   } catch (error) {
     console.error('워크스페이스 목록 가져오기 실패:', error.response?.data || error.message)
@@ -35,6 +35,33 @@ export const deleteWorkspace = async (id) => {
     return response.data
   } catch (error) {
     console.error('워크스페이스 삭제 실패:', error.response?.data || error.message)
+    throw error
+  }
+}
+
+export const fetchWorkspaceDetail = async (id) => {
+  try {
+    const response = await api.get(`/workspaces/${id}`)
+    // console.log("워크스페이스 상세 정보:", response.data)
+    return response.data
+  } catch (error) {
+    console.error('워크스페이스 상세 정보 가져오기 실패:', error.response?.data || error.message)
+    throw error
+  }
+}
+
+export const updateWorkspace = async (id, name, description) => {
+  try {
+    const response = await api.put(`/workspaces/${id}`, {
+      workspace: {
+        name,
+        description
+      }
+    })
+    console.log("워크스페이스 수정 성공:", response.data)
+    return response.data
+  } catch (error) {
+    console.error('워크스페이스 수정 실패:', error.response?.data || error.message)
     throw error
   }
 }
