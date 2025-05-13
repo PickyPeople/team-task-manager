@@ -3,15 +3,12 @@ class WorkspacesController < ApplicationController
 
   # POST /workspaces
   def create
-    # 📡 Authorization 헤더 로그 출력
-    # Rails.logger.info "📡 Authorization 헤더: #{request.headers['Authorization']}"
-    # Rails.logger.info "📦 전달된 파라미터: #{params[:workspace]}"
 
-    if @current_user.nil?
-      Rails.logger.error "🚫 인증되지 않은 사용자입니다."
-      render json: { error: "Unauthorized" }, status: :unauthorized
-      return
-    end
+    # if @current_user.nil?
+    #   Rails.logger.error "🚫 인증되지 않은 사용자입니다."
+    #   render json: { error: "Unauthorized" }, status: :unauthorized
+    #   return
+    # end
 
     
     workspace = Workspace.new(workspace_params)
@@ -32,14 +29,14 @@ class WorkspacesController < ApplicationController
     end
   end
 
-  # ✅ GET /workspaces
+  # GET /workspaces
   def index
-    workspaces = Workspace.where(user_id: @current_user.id)
-    render json: workspaces, status: :ok
+    workspaces = Workspace.all
+    render json: workspaces
   end
 
   def show
-    workspace = Workspace.find_by(id: params[:id], user_id: @current_user.id)
+    workspace = Workspace.find_by(id: params[:id])
 
     if workspace
       render json: {
