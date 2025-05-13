@@ -26,6 +26,7 @@ export const updateTask = async (workspaceId, taskId, taskData) => {
   console.log('태스크 수정 시작!')
   try {
     const res = await api.patch(`/workspaces/${workspaceId}/tasks/${taskId}`, taskData);
+    console.log('수정된 task data: ', res.data);
     return res.data;
   } catch (err) {
     console.error("Task 수정에 실패했습니다.", err);
