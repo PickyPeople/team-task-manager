@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
-  skip_before_action :authenticate_user!, only: [:signup, :login]
+  skip_before_action :authenticate_user!, only: [:signup, :login, :logout]
+
   # POST /signup
   def signup
     user = User.new(user_params)
@@ -22,6 +23,18 @@ class UsersController < ApplicationController
       render json: { token: token, user: user }, status: :ok
     else
       render json: { error: 'Invalid email or password' }, status: :unauthorized
+    end
+  end
+
+  def logout
+    header = request.headers['Authorization']
+    token = header.split(' ').last if header.present?
+    decoded = JsonWebToken.decode(token)
+
+    if decoded && User.exists?(id: decoded[:user_id])
+      render json: { message: "ログアウトに成功しました。" }, status: :ok
+    else 
+      render json: { error: "ログアウトに失敗しました。" }, status: :unauthorized
     end
   end
 
