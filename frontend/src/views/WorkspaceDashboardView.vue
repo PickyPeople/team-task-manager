@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  HeaderComp
+  HeaderComp(@search="handleSearch")
 
   div.container.mt-5 
     div.d-flex.justify-content-between.align-items-center.mb-4
@@ -8,7 +8,7 @@
       button.btn.btn-primary(@click="showCreateModal = true") + 워크스페이스 생성
 
     draggable.grid-view(
-      :list="workspaces", 
+      :list="filteredWorkspaces", 
       group="workspaces", 
       @end="onDragEnd"
     )
@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import draggable from "vuedraggable";
 import WorkspaceCard from "../components/WorkspaceCard.vue";
 import CreateWorkspaceModal from "../components/CreateWorkspaceModal.vue";
@@ -32,21 +32,20 @@ import HeaderComp from "../components/HeaderComp.vue";
 import { createWorkspace, fetchWorkspaces } from '../api/workspaceApi'
 
 const workspaces = ref([]);
+const searchQuery = ref('');
+
+console.log(searchQuery.value)
 
 const showCreateModal = ref(false);
 
 const loadWorkspaces = async () => {
   try {
-    const data = await fetchWorkspaces()
+    const data = await fetchWorkspaces();
     workspaces.value = data
   } catch (error) {
     console.error("워크스페이스를 불러오지 못했습니다.")
   }
 }
-
-onMounted(() => {
-  loadWorkspaces()
-})
 
 const handleCreateWorkspace = async (workspaceData) => {
   try {
@@ -58,11 +57,23 @@ const handleCreateWorkspace = async (workspaceData) => {
   }
 }
 
+onMounted(() => {
+  loadWorkspaces()
+})
 
+const handleSearch = (query) => {
+  searchQuery.value = query;
+}
 
-const onDragEnd = (evt) => {
-  // console.log("드래그 완료!", evt.oldIndex, "→", evt.newIndex);
-};
+console.log(searchQuery.value)
+
+const filteredWorkspaces = computed(() => {
+  if (!searchQuery.value) return workspaces.value
+  return workspaces.value.filter(ws =>
+    ws.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+    ws.owner.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
 </script>
 
 <style>

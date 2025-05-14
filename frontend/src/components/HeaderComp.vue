@@ -8,8 +8,8 @@
       ul.navbar-nav.me-auto.mb-2.mb-lg-0
         li.nav-item
           a.nav-link.active(aria-current="page" href="#") Home
-      form.d-flex(role="search")
-        input.form-control.me-2(type="search" placeholder="Search" aria-label="Search")
+      form.d-flex(role="search" @submit.prevent = "handleSearch")
+        input.form-control.me-2(type="search" placeholder="Search" aria-label="Search" v-model="searchQuery")
         button.btn.btn-outline-success(type="submit") Search
       div.logout(@click="handleLogout") logout  
 
@@ -18,9 +18,17 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { logout } from '../api/authApi';
+import { ref } from 'vue';
 
 
 const router = useRouter()
+
+const searchQuery = ref('');
+const emit = defineEmits(['search']);
+
+const handleSearch = () => {
+  emit('search', searchQuery.value);
+}
 
 
 const handleLogout = async () => {

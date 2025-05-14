@@ -51,7 +51,7 @@ const handleDelete = async () => {
     try {
       await deleteWorkspace(route.params.id)
       alert("워크스페이스가 삭제되었습니다.")
-      router.push('/')
+      router.push('/workspaces')
     } catch (error) {
       alert("삭제에 실패했습니다.")
     }
