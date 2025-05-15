@@ -23,7 +23,7 @@ div.container.mt-5
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { fetchWorkspaceDetail, updateWorkspace, deleteWorkspace, joinWorkspace, getParticipants } from '../api/workspaceApi'
+import { fetchWorkspaceDetail, updateWorkspace, deleteWorkspace, joinWorkspace, getParticipants, leaveWorkspace } from '../api/workspaceApi'
 import { me } from '../api/authApi'
 import TaskList from '../components/TaskList.vue'
 
@@ -82,8 +82,10 @@ const handleJoin = async() => {
    await checkIfUserIsParticipant()
 }
 
-const handleLeave = () => {
-  // 탈퇴 기능은 추후 구현
+const handleLeave = async() => {
+  await leaveWorkspace(workspace.value.id);
+  await getParticipants();
+  await checkIfUserIsParticipant();
 }
 
 onMounted( async () => {

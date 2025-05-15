@@ -84,3 +84,12 @@ export const getParticipants = async (workspaceId) => {
     console.error('参加者目録読み込み失敗', err);
   }
 }
+
+export const leaveWorkspace = async (workspaceId) => {
+  try {
+    const res = await api.delete(`/workspaces/${workspaceId}/leave`);
+    return res.data
+  } catch (err) {
+    console.error('ワークスペース脱退');
+  }
+}
