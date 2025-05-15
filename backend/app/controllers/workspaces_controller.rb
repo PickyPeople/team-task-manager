@@ -44,6 +44,7 @@ class WorkspacesController < ApplicationController
         name: workspace.name,
         description: workspace.description,
         owner: workspace.owner,
+        user_id: workspace.user_id,
         created_at: workspace.created_at,
         updated_at: workspace.updated_at
       }, status: :ok

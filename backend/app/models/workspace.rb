@@ -1,5 +1,5 @@
 class Workspace < ApplicationRecord
-  belongs_to :user  # 💡 User와 연결되어 있음
+  belongs_to :user  # User와 연결되어 있음
 
   validates :name, presence: true
   validates :description, presence: true
