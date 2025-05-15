@@ -10,12 +10,13 @@ div.container
         div.circle(:class="getStatusClass(task.status)")
         span.ml-2 {{ task.title }} - {{ task.description }}
       div.d-flex.align-items-center
-        select.form-select.form-select-sm.w-auto(v-model="task.status" @change="handleStatusChange(task)")
-          option(value="pending") 대기중
-          option(value="in-progress") 진행중
-          option(value="completed") 완료
-        button.btn.btn-outline-warning.btn-sm.ml-2(@click="handleEdit(task)") ✏️
-        button.btn.btn-outline-danger.btn-sm.ml-1(@click="handleDelete(task.id)") 🗑️
+        template(v-if="matchUser")
+          select.form-select.form-select-sm.w-auto(v-model="task.status" @change="handleStatusChange(task)")
+            option(value="pending") 대기중
+            option(value="in-progress") 진행중
+            option(value="completed") 완료
+          button.btn.btn-outline-warning.btn-sm.ml-2(@click="handleEdit(task)") ✏️
+          button.btn.btn-outline-danger.btn-sm.ml-1(@click="handleDelete(task.id)") 🗑️
 </template>
 
 <script setup>
@@ -27,6 +28,9 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  matchUser: {
+    type: Boolean
+  }
 });
 
 const tasks = ref([]);

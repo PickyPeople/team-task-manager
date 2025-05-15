@@ -40,3 +40,12 @@ export const logout = async() => {
     console.error(err);
   }
 }
+
+export const me = async() => {
+  try {
+    const res = await api.get('/me')
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
