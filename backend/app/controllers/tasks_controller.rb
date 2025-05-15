@@ -25,7 +25,7 @@ class TasksController < ApplicationController
 
   # Task 수정
   def update
-    unless @workspace.user == @current_user
+    unless @workspace.users.include?(@current_user)
       render json: { error: "수정 권한이 없습니다." }, status: :forbidden
       return
     end
@@ -39,7 +39,7 @@ class TasksController < ApplicationController
 
   # Task 삭제
   def destroy
-    unless @workspace.user == @current_user
+    unless @workspace.users.include?(@current_user)
       render json: { error: "삭제 권한이 없습니다." }, status: :forbidden
       return
     end

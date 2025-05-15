@@ -2,7 +2,7 @@
 div.container
   div.d-flex.justify-content-between.align-items-center.mb-3
     h4 Task 目録
-    template(v-if="matchUser")
+    template(v-if="isParticipant")
       button.btn.btn-primary(@click="handleCreate") ➕ Task 추가하기
 
   ul.list-group
@@ -11,7 +11,7 @@ div.container
         div.circle(:class="getStatusClass(task.status)")
         span.ml-2 {{ task.title }} - {{ task.description }}
       div.d-flex.align-items-center
-        template(v-if="matchUser")
+        template(v-if="isParticipant")
           select.form-select.form-select-sm.w-auto(v-model="task.status" @change="handleStatusChange(task)")
             option(value="pending") 대기중
             option(value="in-progress") 진행중
@@ -29,7 +29,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  matchUser: {
+  isParticipant: {
     type: Boolean
   }
 });
