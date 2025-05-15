@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post "/logout", to: "users#logout"
   post '/workspaces/:id/join', to: 'workspaces#join'
   get  '/workspaces/:id/participants', to: 'workspaces#participants'
+  delete '/workspaces/:id/leave', to: 'workspaces#leave'
  
   resources :workspaces, only: [:create, :index, :show, :update, :destroy] do
     resources :tasks, only: [:index, :create, :update, :destroy, :show]

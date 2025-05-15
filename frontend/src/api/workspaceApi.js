@@ -65,3 +65,31 @@ export const updateWorkspace = async (id, name, description) => {
     throw error
   }
 }
+
+export const joinWorkspace = async (workspaceId) => {
+  try {
+    const res = await api.post(`/workspaces/${workspaceId}/join`)
+    console.log(res);
+    return res.data
+  } catch (err) {
+
+  }
+}
+
+export const getParticipants = async (workspaceId) => {
+  try {
+    const res = await api.get(`/workspaces/${workspaceId}/participants`)
+    return res.data;
+  } catch (err) {
+    console.error('参加者目録読み込み失敗', err);
+  }
+}
+
+export const leaveWorkspace = async (workspaceId) => {
+  try {
+    const res = await api.delete(`/workspaces/${workspaceId}/leave`);
+    return res.data
+  } catch (err) {
+    console.error('ワークスペース脱退');
+  }
+}
