@@ -4,13 +4,6 @@ class WorkspacesController < ApplicationController
   # POST /workspaces
   def create
 
-    # if @current_user.nil?
-    #   Rails.logger.error "🚫 인증되지 않은 사용자입니다."
-    #   render json: { error: "Unauthorized" }, status: :unauthorized
-    #   return
-    # end
-
-    
     workspace = Workspace.new(workspace_params)
     workspace.user = @current_user
     workspace.owner = current_user.name
@@ -83,6 +76,25 @@ class WorkspacesController < ApplicationController
     else
       render json: { error: "워크스페이스를 찾을 수 없습니다." }, status: :not_found
     end
+  end
+
+  def join
+    workspace = Workspace.find_by(id: params[:id])
+    return render json: { error: "워크스페이스 없음" }, status: :not_found unless workspace
+
+    if workspace.users.include?(@current_user)
+      return render json: { message: "이미 참가함" }, status: :ok
+    end
+
+    workspace.users << @current_user
+    render json: { message: "워크스페이스 참가 완료" }, status: :ok
+  end
+
+  def participants
+    workspace = Workspace.find_by(id: params[:id])
+    return render json: { error: "워크스페이스 없음" }, status: :not_found unless workspace
+
+    render json: workspace.users.select(:id, :name, :email)
   end
 
   private
