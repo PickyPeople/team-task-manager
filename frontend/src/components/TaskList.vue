@@ -1,8 +1,9 @@
 <template lang="pug">
 div.container
   div.d-flex.justify-content-between.align-items-center.mb-3
-    h4 Task 목록
-    button.btn.btn-primary(@click="handleCreate") ➕ Task 추가하기
+    h4 Task 目録
+    template(v-if="matchUser")
+      button.btn.btn-primary(@click="handleCreate") ➕ Task 추가하기
 
   ul.list-group
     li.list-group-item.d-flex.justify-content-between.align-items-center(v-for="task in tasks" :key="task.id")
