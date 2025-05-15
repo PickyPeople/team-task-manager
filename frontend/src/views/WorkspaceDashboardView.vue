@@ -33,14 +33,12 @@ import { createWorkspace, fetchWorkspaces } from '../api/workspaceApi'
 
 const workspaces = ref([]);
 const searchQuery = ref('');
-
-console.log(searchQuery.value)
-
 const showCreateModal = ref(false);
 
 const loadWorkspaces = async () => {
   try {
     const data = await fetchWorkspaces();
+    console.log(data);
     workspaces.value = data
   } catch (error) {
     console.error("워크스페이스를 불러오지 못했습니다.")
@@ -64,8 +62,6 @@ onMounted(() => {
 const handleSearch = (query) => {
   searchQuery.value = query;
 }
-
-console.log(searchQuery.value)
 
 const filteredWorkspaces = computed(() => {
   if (!searchQuery.value) return workspaces.value

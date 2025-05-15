@@ -57,4 +57,15 @@ const handleLogout = async () => {
   background-color: black;
   color: white;
 }
+
+@media (max-width: 991px) {
+  .logout {
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+  }
+}
 </style>

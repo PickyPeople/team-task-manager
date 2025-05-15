@@ -20,10 +20,12 @@ import TaskList from '../components/TaskList.vue'
 const route = useRoute()
 const router = useRouter()
 const workspace = ref({})
+const currentUserId = ref(null)
 
 const fetchWorkspaceDetailData = async () => {
   try {
     const data = await fetchWorkspaceDetail(route.params.id)
+    console.log(data);
     workspace.value = data
   } catch (error) {
     console.error("워크스페이스 정보를 불러오지 못했습니다.")
@@ -58,9 +60,17 @@ const handleDelete = async () => {
   }
 }
 
+const handleJoin = () => {
+  alert("참가하기 기능은 아직 구현되지 않았습니다.")
+}
+
 onMounted(() => {
   fetchWorkspaceDetailData();
+  const user = JSON.parse(localStorage.getItem('user'))
+  console.log(user)
+  currentUserId.value = user?.id
 })
+
 </script>
 
 <style scoped>
