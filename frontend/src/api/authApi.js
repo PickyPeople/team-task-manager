@@ -31,3 +31,12 @@ export const signup = async (name, email, password) => {
     throw err
   }
 }
+
+export const logout = async() => {
+  try {
+    const res = await api.post('/logout')
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
