@@ -27,9 +27,9 @@ Vue.js + Ruby on Rails による簡易タスク管理SaaSツール。
 ---
 
 ## 📂 ディレクトリ構成
-/backend    - Rails API (RSpec, JWT, Devise)
-/frontend   - Vue 3 SPA (Vite + Pug)
-/docs       - 設計書・提出用資料
+- /backend    - Rails API (RSpec, JWT, Devise)
+- /frontend   - Vue 3 SPA (Vite + Pug)
+- /docs       - 設計書・提出用資料
 
 ---
 
