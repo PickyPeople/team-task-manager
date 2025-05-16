@@ -3,7 +3,6 @@ import api from "../lib/axios";
 export const fetchTasks = async (workspaceId) => {
   try {
     const res = await api.get(`workspaces/${workspaceId}/tasks`);
-    console.log('task 정보 가져오기: ', res.data);
     return res.data
   } catch (err) {
     console.error('테스크 목록을 불러오지 못했습니다.', err);

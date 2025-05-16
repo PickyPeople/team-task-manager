@@ -1,5 +1,5 @@
 <template lang="pug">
-div.container
+div.container.mt-5.pb-3
   div.d-flex.justify-content-between.align-items-center.mb-3
     h4 Task リスト
     template(v-if="isParticipant || isMine")
@@ -39,6 +39,7 @@ const props = defineProps({
 });
 
 const tasks = ref([]);
+const emit = defineEmits(['taskChanged'])
 
 const loadTasks = async () => {
   try {
@@ -61,6 +62,7 @@ const handleCreate = async () => {
         done: false
       });
       tasks.value.push(newTask);
+      emit('taskChanged')
     } catch (err) {
         console.log('태스크 생성에 실패하였습니다.', err);
     }
@@ -110,6 +112,7 @@ const handleStatusChange = async (task) => {
     })
     const index = tasks.value.findIndex(t => t.id === task.id);
     tasks.value[index] = updatedTask;
+    emit('taskChanged')
   } catch(err) {
     return
   }
