@@ -21,7 +21,7 @@ Vue.js + Ruby on Rails による簡易タスク管理SaaSツール。
 | 認証 | JWT + HttpOnly Cookie |
 | テスト | RSpec（5テスト成功） |
 | DB | SQLite3 |
-| バッチ処理 | Rake Task（進捗率予定）
+| バッチ処理 | Rake Task（進捗率）
 
 ---
 
