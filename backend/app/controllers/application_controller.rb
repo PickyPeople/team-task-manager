@@ -1,4 +1,3 @@
-# app/controllers/application_controller.rb
 class ApplicationController < ActionController::API
   # 모든 요청 전에 인증 로직을 실행
   before_action :authenticate_user!
