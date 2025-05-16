@@ -5,11 +5,9 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,  //이 설정이 있어야 쿠키가 전달됨
+  withCredentials: true,  
 })
 
-
-// 요청 인터셉터 설정
 api.interceptors.request.use(
   (config) => {
 

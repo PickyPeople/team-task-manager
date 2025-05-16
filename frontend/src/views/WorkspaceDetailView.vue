@@ -35,8 +35,10 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { fetchWorkspaceDetail, updateWorkspace, deleteWorkspace, joinWorkspace, getParticipants, leaveWorkspace, getProgressByWorkspace } from '../api/workspaceApi'
 import { me } from '../api/authApi'
+import { fetchTasks } from '../api/taskApi'
 import TaskList from '../components/TaskList.vue'
 import WorkspaceChart from '../components/WorkspaceChart.vue'
+import { useTaskStore } from "../stores/taskStore"
 
 const route = useRoute()
 const router = useRouter()
@@ -46,6 +48,8 @@ const currentUserId = ref(null)
 const isParticipant = ref(false)
 const participants = ref([])
 const progressData = ref([])
+
+const taskStore = useTaskStore()
 
 
 const fetchWorkspaceDetailData = async () => {
@@ -92,16 +96,27 @@ const handleDelete = async () => {
 const handleJoin = async() => {
    await joinWorkspace(workspace.value.id)
    await checkIfUserIsParticipant()
+   await fetchTaskList()
 }
 
 const handleLeave = async() => {
   await leaveWorkspace(workspace.value.id);
   await getParticipants();
   await checkIfUserIsParticipant();
+  taskStore.clearTasks()
 }
 
 const fetchProgress = async () => {
   progressData.value = await getProgressByWorkspace(workspace.value.id)
+}
+
+const fetchTaskList = async () => {
+  try {
+    const tasks = await fetchTasks(workspace.value.id)
+    taskStore.setTasks(tasks)
+  } catch (err) {
+    console.error('태스크 불러오기 실패:', err)
+  }
 }
 
 onMounted( async () => {
@@ -111,11 +126,11 @@ onMounted( async () => {
 
     await fetchWorkspaceDetailData();
     await checkIfUserIsParticipant();
+    await fetchTaskList();
+    await fetchProgress();
   } catch (err) {
     console.error('ユーザを探せません。', err);
   }
-  fetchWorkspaceDetailData();
-  fetchProgress();
 })
 
 </script>
