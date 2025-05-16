@@ -67,3 +67,7 @@ Finished in 0.03787 seconds (files took 0.61113 seconds to load)
 ---
 ## タスクの創成、修正、削除
 ▶️ [動画を見る](https://youtu.be/jFwMoEU_xXE)
+
+---
+## 違うユーザのワークスペースへの参加
+▶️ [動画を見る](https://youtu.be/31UDwZ7QArk)
