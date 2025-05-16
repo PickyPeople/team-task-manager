@@ -6,17 +6,17 @@
   
       form(@submit.prevent="handleLogin")
         div.mb-3.text-start
-          label.form-label(for="email") 이메일
+          label.form-label(for="email") メール
           input#email.form-control(type="email" v-model="email" required placeholder="example@email.com")
         
         div.mb-3.text-start
-          label.form-label(for="password") 비밀번호
+          label.form-label(for="password") パスワード
           input#password.form-control(type="password" v-model="password" required placeholder="비밀번호 입력")
 
-        p.errMsg(v-if="successLogin") 이메일 혹은 비밀번호를 다시 한번 확인해주세요
+        p.errMsg(v-if="successLogin") メールまたはパスワードを確認してください
 
-        button.btn.btn-primary.w-100.mb-2(type="submit") 로그인
-        button.btn.btn-outline-secondary.w-100(@click="goToSignup") 회원가입
+        button.btn.btn-primary.w-100.mb-2(type="submit") ログイン
+        button.btn.btn-outline-secondary.w-100(@click="goToSignup") サインアップ
   </template>
 
 <script setup>

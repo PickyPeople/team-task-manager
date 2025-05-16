@@ -4,8 +4,8 @@
 
   div.container.mt-5 
     div.d-flex.justify-content-between.align-items-center.mb-4
-      h2 워크 스페이스 목록
-      button.btn.btn-primary(@click="showCreateModal = true") + 워크스페이스 생성
+      h2 ワークスペース リスト
+      button.btn.btn-primary(@click="showCreateModal = true") + ワークスペースを作る
 
     draggable.grid-view(
       :list="filteredWorkspaces", 

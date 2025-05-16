@@ -1,9 +1,9 @@
 <template lang="pug">
 div.container
   div.d-flex.justify-content-between.align-items-center.mb-3
-    h4 Task 目録
-    template(v-if="isParticipant")
-      button.btn.btn-primary(@click="handleCreate") ➕ Task 추가하기
+    h4 Task リスト
+    template(v-if="isParticipant || isMine")
+      button.btn.btn-primary(@click="handleCreate") ➕ Taskを追加
 
   ul.list-group
     li.list-group-item.d-flex.justify-content-between.align-items-center(v-for="task in tasks" :key="task.id")
@@ -11,11 +11,11 @@ div.container
         div.circle(:class="getStatusClass(task.status)")
         span.ml-2 {{ task.title }} - {{ task.description }}
       div.d-flex.align-items-center
-        template(v-if="isParticipant")
+        template(v-if="isParticipant || isMine")
           select.form-select.form-select-sm.w-auto(v-model="task.status" @change="handleStatusChange(task)")
-            option(value="pending") 대기중
-            option(value="in-progress") 진행중
-            option(value="completed") 완료
+            option(value="pending") 対応待ち
+            option(value="in-progress") 対応中
+            option(value="completed") 対応済み
           button.btn.btn-outline-warning.btn-sm.ml-2(@click="handleEdit(task)") ✏️
           button.btn.btn-outline-danger.btn-sm.ml-1(@click="handleDelete(task.id)") 🗑️
 </template>
@@ -30,6 +30,9 @@ const props = defineProps({
     required: true,
   },
   isParticipant: {
+    type: Boolean
+  },
+  isMine: {
     type: Boolean
   }
 });

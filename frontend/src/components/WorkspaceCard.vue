@@ -4,7 +4,7 @@
       div.card-body
         h5.card-title {{ workspace.name }}
         p.card-text {{ workspace.description }}
-        p.card-text 작성자: {{ workspace.owner }}
+        p.card-text 作成者: {{ workspace.owner }}
 </template>
 
 <script setup>
