@@ -2,7 +2,7 @@
 div.container
   div.d-flex.justify-content-between.align-items-center.mb-3
     h4 Task リスト
-    template(v-if="isParticipant")
+    template(v-if="isParticipant || isMine")
       button.btn.btn-primary(@click="handleCreate") ➕ Taskを追加
 
   ul.list-group
@@ -11,7 +11,7 @@ div.container
         div.circle(:class="getStatusClass(task.status)")
         span.ml-2 {{ task.title }} - {{ task.description }}
       div.d-flex.align-items-center
-        template(v-if="isParticipant")
+        template(v-if="isParticipant || isMine")
           select.form-select.form-select-sm.w-auto(v-model="task.status" @change="handleStatusChange(task)")
             option(value="pending") 対応待ち
             option(value="in-progress") 対応中
@@ -30,6 +30,9 @@ const props = defineProps({
     required: true,
   },
   isParticipant: {
+    type: Boolean
+  },
+  isMine: {
     type: Boolean
   }
 });
