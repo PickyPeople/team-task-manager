@@ -13,7 +13,6 @@ export const fetchTasks = async (workspaceId) => {
 export const createTask = async (workspaceId, taskData) => {
   try {
     const res = await api.post(`workspaces/${workspaceId}/tasks`, taskData);
-    console.log('테스크를 등록했습니다: ', res.data);
     return res.data;
   } catch (err) {
     console.error("Task 생성에 실패했습니다.", err);
