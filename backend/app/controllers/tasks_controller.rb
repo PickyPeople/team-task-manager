@@ -5,19 +5,42 @@ class TasksController < ApplicationController
 
   # 특정 워크스페이스의 Task 목록 조회
   def index
-    tasks = @workspace.tasks
-    render json: tasks, status: :ok
-  end
+  tasks = @workspace.tasks.includes(:user) # 작성자 미리 로딩
+
+  render json: tasks.map { |task|
+    {
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      done: task.done,
+      assignee_id: task.assignee_id,
+      creator_id: task.user_id,
+      creator_name: task.user.name
+    }
+  }, status: :ok
+end
 
   # Task 생성
   def create
-    task = @workspace.tasks.build(task_params)
-    if task.save
-      render json: task, status: :created
-    else
-      render json: { error: task.errors.full_messages }, status: :unprocessable_entity
-    end
+  task = @workspace.tasks.build(task_params)
+  task.user = @current_user # 작성자 설정
+
+  if task.save
+    render json: {
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      done: task.done,
+      assignee_id: task.assignee_id,
+      creator_id: task.user_id,
+      creator_name: task.user.name
+    }, status: :created
+  else
+    render json: { error: task.errors.full_messages }, status: :unprocessable_entity
   end
+end
 
   def show
     render json: @task, status: :ok
