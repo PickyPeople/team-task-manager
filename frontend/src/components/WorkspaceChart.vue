@@ -1,11 +1,11 @@
 <template lang="pug">
-  div.mt-5(style="max-height: 200px; overflow: auto;")
+  div.mt-5.container(:style="{ height: `${containerHeight}px` }")
     h5.text-primary 進捗率
     Bar(:data="chartData" :options="chartOptions" )
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { Bar } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -26,7 +26,11 @@ const props = defineProps({
   }
 })
 
-console.log(props.progressData)
+const colorPalette = [
+  '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+  '#858796', '#fd7e14', '#20c997', '#6f42c1', '#f8f9fc'
+]
+
 
 const chartData = computed(() => ({
   labels: props.progressData.map(p => p.name),
@@ -34,14 +38,21 @@ const chartData = computed(() => ({
     {
       label: '진척률 (%)',
       data: props.progressData.map(p => p.progress),
-      backgroundColor: '#4e73df'
+      backgroundColor: props.progressData.map((_, index) => colorPalette[index % colorPalette.length])
     }
   ]
 }))
 
 const chartOptions = {
   responsive: true,
-  indexAxis: 'y', // 가로 막대그래프
+  maintainAspectRatio: false,  
+  indexAxis: 'y',
+  elements: {
+    bar: {
+      barThickness: 10, 
+      borderRadius: 4
+    }
+  },
   scales: {
     x: {
       min: 0,
@@ -60,4 +71,13 @@ const chartOptions = {
     }
   }
 }
+
+const containerHeight = computed(() => {
+  const perPersonHeight = 35
+  const padding = 50
+  return props.progressData.length * perPersonHeight + padding
+})
+
+
 </script>
+
