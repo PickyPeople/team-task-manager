@@ -25,6 +25,7 @@ div.container.mt-5
     :isParticipant="isParticipant", 
     :isMine="workspace.user_id === currentUserId",
     :currentUserId="currentUserId",
+    :userList="participants",
     @taskChanged="fetchProgress"
     )
 </template>
