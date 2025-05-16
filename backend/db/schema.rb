@@ -48,10 +48,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_16_073710) do
   create_table "workspaces", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "owner"
     t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_workspaces_on_user_id"
   end
 

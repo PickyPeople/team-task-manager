@@ -105,7 +105,7 @@ class WorkspacesController < ApplicationController
   return render json: { error: "워크스페이스 없음" }, status: :not_found unless workspace
 
   if workspace.users.include?(@current_user)
-    workspace.users.delete(@current_user)
+    workspace.users.destroy(@current_user)
     render json: { message: "탈퇴 완료" }, status: :ok
   else
     render json: { error: "이미 참가하지 않은 상태입니다." }, status: :bad_request

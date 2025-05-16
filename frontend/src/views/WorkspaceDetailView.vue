@@ -17,7 +17,7 @@ div.container.mt-5
     li.list-group-item(v-for="user in participants" :key="user.id")
       span {{ user.name }} ({{ user.email }})
 
-  WorkspaceChart(:progressData="progressData" v-if="progressData")
+  WorkspaceChart(:progressData="progressData" v-if="progressData && isParticipant")
 
   TaskList(
     v-if="workspace.id", 
