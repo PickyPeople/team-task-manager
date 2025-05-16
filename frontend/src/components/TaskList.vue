@@ -53,8 +53,8 @@ const filteredTasks = computed(() => {
 })
 
 const handleCreate = async () => {
-  const title = prompt("새로운 Task의 제목을 입력하세요.");
-  const description = prompt("task에 대한 설명을 입력해주세요");
+  const title = prompt("Taskのタイトルを入力してください");
+  const description = prompt("Taskの説明を入力してください");
 
   if(title && description) {
     try {
@@ -74,8 +74,8 @@ const handleCreate = async () => {
 }
 
 const handleEdit = async (task) => {
-  const newTitle = prompt("Task 제목 수정:", task.title);
-  const newDescription = prompt("Task 설명 수정:", task.description);
+  const newTitle = prompt("Taskのタイトル修正:", task.title);
+  const newDescription = prompt("Taskの説明を修正:", task.description);
 
   if(newTitle && newDescription) {
     try {
@@ -93,10 +93,11 @@ const handleEdit = async (task) => {
 }
 
 const handleDelete = async (taskId) => {
-  if(confirm("정말 삭제하시겠습니까?")) {
+  if(confirm("本当に削除しますか？？")) {
     try {
       await deleteTask(props.workspaceId, taskId);
       taskStore.deleteTask(taskId);
+      emit('taskChanged')
     } catch (err) {
       console.error('삭제에 실패했습니다.', err);
     }

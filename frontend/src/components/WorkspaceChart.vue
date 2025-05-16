@@ -66,7 +66,7 @@ const chartOptions = {
     legend: { display: false },
     tooltip: {
       callbacks: {
-        label: context => ` ${context.raw}% 완료`
+        label: context => ` ${context.raw}% 完了`
       }
     }
   }
