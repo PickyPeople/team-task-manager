@@ -34,7 +34,8 @@ const props = defineProps({
   },
   isMine: {
     type: Boolean
-  }
+  },
+  currentUserId: Number
 });
 
 const tasks = ref([]);
@@ -104,7 +105,8 @@ const handleStatusChange = async (task) => {
       title: task.title,
       description: task.description,
       status: task.status,
-      done: task.done
+      done: task.done,
+      assignee_id: props.currentUserId
     })
     const index = tasks.value.findIndex(t => t.id === task.id);
     tasks.value[index] = updatedTask;

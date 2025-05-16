@@ -17,7 +17,13 @@ div.container.mt-5
     li.list-group-item(v-for="user in participants" :key="user.id")
       span {{ user.name }} ({{ user.email }})
   
-  TaskList(:workspaceId="workspace.id", v-if="workspace.id", :isParticipant="isParticipant", :isMine="isMine")
+  TaskList(
+    :workspaceId="workspace.id", 
+    v-if="workspace.id", 
+    :isParticipant="isParticipant", 
+    :isMine="workspace.user_id === currentUserId",
+    :currentUserId="currentUserId"
+    )
 </template>
 
 <script setup>
@@ -32,7 +38,6 @@ const router = useRouter()
 
 const workspace = ref({})
 const currentUserId = ref(null)
-const isMine = ref(false);
 const isParticipant = ref(false)
 const participants = ref([])
 
@@ -93,9 +98,6 @@ onMounted( async () => {
   try { 
     const user = await me();
     currentUserId.value = user.id;
-    if(currentUserId.value === user.id) {
-      isMine.value = true;
-    }
 
     await fetchWorkspaceDetailData();
     await checkIfUserIsParticipant();
