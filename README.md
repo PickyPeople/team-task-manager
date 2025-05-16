@@ -53,3 +53,11 @@ bundle exec rspec
 
 Finished in 0.03787 seconds (files took 0.61113 seconds to load)
 5 examples, 0 failures
+```
+
+# 使い方
+---
+## ログイン＆サインアップ
+▶️ [動画を見る]([https://www.youtube.com/watch?v=YOUR_VIDEO_ID](https://youtu.be/nR9HnVMNYyE))
+
+---
