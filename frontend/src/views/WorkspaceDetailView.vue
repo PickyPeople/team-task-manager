@@ -12,26 +12,30 @@ div.container.mt-5
 
   p.mb-3 {{ workspace.description }}
 
-   h5.mt-4 参加者 リスト
-   ul.list-group
+  h5.mt-4 参加者 リスト
+  ul.list-group
     li.list-group-item(v-for="user in participants" :key="user.id")
       span {{ user.name }} ({{ user.email }})
-  
+
+  WorkspaceChart(:progressData="progressData" v-if="progressData")
+
   TaskList(
-    :workspaceId="workspace.id", 
     v-if="workspace.id", 
+    :workspaceId="workspace.id", 
     :isParticipant="isParticipant", 
     :isMine="workspace.user_id === currentUserId",
-    :currentUserId="currentUserId"
+    :currentUserId="currentUserId",
+    @taskChanged="fetchProgress"
     )
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { fetchWorkspaceDetail, updateWorkspace, deleteWorkspace, joinWorkspace, getParticipants, leaveWorkspace } from '../api/workspaceApi'
+import { fetchWorkspaceDetail, updateWorkspace, deleteWorkspace, joinWorkspace, getParticipants, leaveWorkspace, getProgressByWorkspace } from '../api/workspaceApi'
 import { me } from '../api/authApi'
 import TaskList from '../components/TaskList.vue'
+import WorkspaceChart from '../components/WorkspaceChart.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -40,11 +44,12 @@ const workspace = ref({})
 const currentUserId = ref(null)
 const isParticipant = ref(false)
 const participants = ref([])
+const progressData = ref([])
+
 
 const fetchWorkspaceDetailData = async () => {
   try {
     const data = await fetchWorkspaceDetail(route.params.id)
-    console.log(data);
     workspace.value = data
   } catch (error) {
     console.error("워크스페이스 정보를 불러오지 못했습니다.")
@@ -94,6 +99,10 @@ const handleLeave = async() => {
   await checkIfUserIsParticipant();
 }
 
+const fetchProgress = async () => {
+  progressData.value = await getProgressByWorkspace(workspace.value.id)
+}
+
 onMounted( async () => {
   try { 
     const user = await me();
@@ -105,6 +114,7 @@ onMounted( async () => {
     console.error('ユーザを探せません。', err);
   }
   fetchWorkspaceDetailData();
+  fetchProgress();
 })
 
 </script>

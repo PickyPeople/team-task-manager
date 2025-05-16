@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   post '/workspaces/:id/join', to: 'workspaces#join'
   get  '/workspaces/:id/participants', to: 'workspaces#participants'
   delete '/workspaces/:id/leave', to: 'workspaces#leave'
+
+  get '/workspaces/:id/progress', to: 'workspaces#progress'
  
   resources :workspaces, only: [:create, :index, :show, :update, :destroy] do
     resources :tasks, only: [:index, :create, :update, :destroy, :show]

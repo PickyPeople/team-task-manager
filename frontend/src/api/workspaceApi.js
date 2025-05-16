@@ -93,3 +93,12 @@ export const leaveWorkspace = async (workspaceId) => {
     console.error('ワークスペース脱退');
   }
 }
+
+export const getProgressByWorkspace = async (workspaceId) => {
+  try {
+    const res = await api.get(`/workspaces/${workspaceId}/progress`)
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+}

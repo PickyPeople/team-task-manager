@@ -109,6 +109,27 @@ class WorkspacesController < ApplicationController
   end
 end
 
+def progress
+  workspace = Workspace.find(params[:id])
+  users = workspace.users + [workspace.user]
+  users.uniq!
+
+  result = users.map do |user|
+    tasks = workspace.tasks.where(assignee_id: user.id)
+    total = tasks.count
+    completed = tasks.where(status: 'completed').count
+    progress = total > 0 ? ((completed.to_f / total) * 100).round(1) : 0.0
+
+    {
+      user_id: user.id,
+      name: user.name,
+      progress: progress
+    }
+  end
+
+  render json: result
+end
+
   private
 
   def workspace_params
