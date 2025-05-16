@@ -2,7 +2,7 @@
 div.container.mt-5.pb-3
   div.d-flex.justify-content-between.align-items-center.mb-3
     h4 Task リスト
-      div.d-flex.align-items-center.mt-4
+      div.d-flex.align-items-center.mt-4.gap-2
         select.form-select.form-select-sm.w-auto.mr-2(v-model="selectedUserId")
           option(:value="null") 全員
           option(v-for="user in userList" :key="user.id" :value="user.id") {{ user.name }}
@@ -14,7 +14,7 @@ div.container.mt-5.pb-3
       div.d-flex.align-items-center.gap-2
         div.circle(:class="getStatusClass(task.status)")
         div.ml-2 {{ task.title }} - {{ task.description }} 
-        div.creator 作成者: {{}}
+        div.creator.text-muted.small 作成者: {{ task.creator_name || '不明' }}
       div.d-flex.align-items-center
         template(v-if="(task.assignee_id === currentUserId) && (isParticipant || isMine)")
           select.form-select.form-select-sm.w-auto(v-model="task.status" @change="handleStatusChange(task)")
