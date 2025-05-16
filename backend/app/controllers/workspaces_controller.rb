@@ -9,7 +9,10 @@ class WorkspacesController < ApplicationController
     workspace.owner = current_user.name
 
     if workspace.save
-      # Rails.logger.info "✅ 워크스페이스 생성 성공: #{workspace.as_json}"
+
+      WorkspaceUser.create(user: @current_user, workspace: workspace)
+
+
       render json: {
         id: workspace.id,
         name: workspace.name,

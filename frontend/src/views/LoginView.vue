@@ -23,19 +23,19 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { login } from "../api/authApi";
+import { useUserStore } from "../stores/userStore";
 
 const router = useRouter();
 const email = ref("");
 const password = ref("");
 const successLogin = ref(false);
+const userStore = useUserStore()
 
 const handleLogin = async () => {
   try {
-    const res = await login(email.value, password.value)
-
-    if(res) {
-      router.push("/workspaces");
-    }
+    const { user, token } = await login(email.value, password.value);
+    userStore.loginSuccess(user, token)
+    router.push("/workspaces");
   } catch (err) {
     console.error("로그인 실패:", err.response?.data || err.message);
     successLogin.value = true;
@@ -49,6 +49,6 @@ const goToSignup = () => {
 
 <style scoped>
 .errMsg {
-  color: #FF9A9A;
+  color: #ff9a9a;
 }
 </style>

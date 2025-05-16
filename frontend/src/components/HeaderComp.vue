@@ -19,11 +19,14 @@
 import { useRouter } from 'vue-router'
 import { logout } from '../api/authApi';
 import { ref } from 'vue';
+import { useUserStore } from '../stores/userStore';
 
 
 const router = useRouter()
+const userStore = useUserStore()
 
 const searchQuery = ref('');
+
 const emit = defineEmits(['search']);
 
 const handleSearch = () => {
@@ -33,12 +36,13 @@ const handleSearch = () => {
 
 const handleLogout = async () => {
   try {
-    await logout()
-    localStorage.removeItem('token') // 로컬 스토리지 토큰 제거
-    router.push('/login') // 로그인 페이지로 이동
+    await logout();
   } catch (err) {
     console.error('로그아웃 실패:', err)
     alert('로그아웃에 실패했습니다.')
+  }  finally {
+    userStore.logout()
+    router.push('/login')
   }
 }
 </script>

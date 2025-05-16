@@ -1,7 +1,7 @@
 <template lang="pug">
 div.container.mt-5.pb-3
   div.d-flex.justify-content-between.align-items-center.mb-3
-    h4 Task リスト
+    h4 📋 タスク一覧
       div.d-flex.align-items-center.mt-4.gap-2
         select.form-select.form-select-sm.w-auto.mr-2(v-model="selectedUserId")
           option(:value="null") 全員
@@ -28,6 +28,7 @@ div.container.mt-5.pb-3
 <script setup>
 import { ref, onMounted,computed } from 'vue';
 import { fetchTasks, deleteTask, createTask, updateTask } from '../api/taskApi';
+import { useTaskStore } from '../stores/taskStore';
 
 const props = defineProps({
   workspaceId: { type: Number, required: true },
@@ -40,23 +41,16 @@ const props = defineProps({
   }
 })
 
-const tasks = ref([]);
+console.log(props.userList)
+
 const emit = defineEmits(['taskChanged'])
+const taskStore = useTaskStore()
 const selectedUserId = ref(null)
 
 const filteredTasks = computed(() => {
-  if (!selectedUserId.value) return tasks.value
-  return tasks.value.filter(task => task.assignee_id === Number(selectedUserId.value))
+  if (!selectedUserId.value) return taskStore.tasks
+  return taskStore.tasks.filter(task => task.assignee_id === Number(selectedUserId.value))
 })
-
-const loadTasks = async () => {
-  try {
-    tasks.value = await fetchTasks(props.workspaceId);
-    console.log(tasks.value);
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 const handleCreate = async () => {
   const title = prompt("새로운 Task의 제목을 입력하세요.");
@@ -71,7 +65,7 @@ const handleCreate = async () => {
         done: false,
         assignee_id: props.currentUserId
       });
-      tasks.value.push(newTask);
+      taskStore.addTask(newTask);
       emit('taskChanged')
     } catch (err) {
         console.log('태스크 생성에 실패하였습니다.', err);
@@ -91,8 +85,7 @@ const handleEdit = async (task) => {
         status: task.status,
         done: task.done,
       });
-      const index = tasks.value.findIndex(t => t.id === task.id);
-      tasks.value[index] = updatedTask;
+      taskStore.updateTask(updatedTask);
     } catch (err) {
       console.log("Task 수정에 실패했습니다.");
     }
@@ -103,7 +96,7 @@ const handleDelete = async (taskId) => {
   if(confirm("정말 삭제하시겠습니까?")) {
     try {
       await deleteTask(props.workspaceId, taskId);
-      tasks.value = tasks.value.filter(task => task.id !== taskId);
+      taskStore.deleteTask(taskId);
     } catch (err) {
       console.error('삭제에 실패했습니다.', err);
     }
@@ -119,8 +112,7 @@ const handleStatusChange = async (task) => {
       done: task.done,
       assignee_id: props.currentUserId
     })
-    const index = tasks.value.findIndex(t => t.id === task.id);
-    tasks.value[index] = updatedTask;
+    taskStore.updateTask(updatedTask);
     emit('taskChanged')
   } catch(err) {
     return
@@ -140,9 +132,6 @@ const getStatusClass = (status) => {
   }
 }
 
-onMounted(() => {
-  loadTasks();
-});
 </script>
 
 <style scoped>

@@ -30,16 +30,16 @@ import WorkspaceCard from "../components/WorkspaceCard.vue";
 import CreateWorkspaceModal from "../components/CreateWorkspaceModal.vue";
 import HeaderComp from "../components/HeaderComp.vue";
 import { createWorkspace, fetchWorkspaces } from '../api/workspaceApi'
+import { useWorkspaceStore } from "../stores/workspaceStore"
 
-const workspaces = ref([]);
+const workspaceStore = useWorkspaceStore()
 const searchQuery = ref('');
 const showCreateModal = ref(false);
 
 const loadWorkspaces = async () => {
   try {
     const data = await fetchWorkspaces();
-    console.log(data);
-    workspaces.value = data
+    workspaceStore.setWorkspaces(data)
   } catch (error) {
     console.error("워크스페이스를 불러오지 못했습니다.")
   }
@@ -48,28 +48,29 @@ const loadWorkspaces = async () => {
 const handleCreateWorkspace = async (workspaceData) => {
   try {
     const newWorkspace = await createWorkspace(workspaceData.name, workspaceData.description)
-    workspaces.value.push(newWorkspace)
+    workspaceStore.workspaces.push(newWorkspace)
     showCreateModal.value = false
   } catch (error) {
     alert('워크스페이스 생성에 실패했습니다.')
   }
 }
 
-onMounted(() => {
-  loadWorkspaces()
-})
-
 const handleSearch = (query) => {
   searchQuery.value = query;
 }
 
 const filteredWorkspaces = computed(() => {
-  if (!searchQuery.value) return workspaces.value
-  return workspaces.value.filter(ws =>
+  if (!searchQuery.value) return workspaceStore.workspaces
+  return workspaceStore.workspaces.filter(ws =>
     ws.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
     ws.owner.toLowerCase().includes(searchQuery.value.toLowerCase())
   )
 })
+
+onMounted(() => {
+  loadWorkspaces()
+})
+
 </script>
 
 <style>

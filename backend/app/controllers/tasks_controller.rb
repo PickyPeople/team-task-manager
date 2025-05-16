@@ -49,12 +49,21 @@ end
   # Task 수정
   def update
    unless @workspace.users.include?(@current_user) || @workspace.user == @current_user
-      render json: { error: "수정 권한이 없습니다." }, status: :forbidden
-      return
-    end
-  
-    if @task.update(task_params)
-      render json: @task, status: :ok
+     render json: { error: "수정 권한이 없습니다." }, status: :forbidden
+     return
+  end
+
+  if @task.update(task_params)
+      render json: {
+        id: @task.id,
+        title: @task.title,
+        description: @task.description,
+        status: @task.status,
+        done: @task.done,
+        assignee_id: @task.assignee_id,
+        creator_id: @task.user_id,
+        creator_name: @task.user.name 
+      }, status: :ok
     else
       render json: { error: @task.errors.full_messages }, status: :unprocessable_entity
     end
