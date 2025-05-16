@@ -58,6 +58,11 @@ Finished in 0.03787 seconds (files took 0.61113 seconds to load)
 # 使い方
 ---
 ## ログイン＆サインアップ
-▶️ [動画を見る]([https://www.youtube.com/watch?v=YOUR_VIDEO_ID](https://youtu.be/nR9HnVMNYyE))
+▶️ [動画を見る](https://youtu.be/nR9HnVMNYyE)
 
 ---
+## ワークスペースを創成、修正、削除
+▶️ [動画を見る](https://youtu.be/XdNU_5gt_BM)
+
+---
+## タスクの創成、修正、削除
