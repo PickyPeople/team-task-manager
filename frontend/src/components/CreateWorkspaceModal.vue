@@ -2,19 +2,19 @@
   div.modal(@click.self="handleClose")
     div.modal-content
       div.modal-header
-        h5.modal-title 워크스페이스 생성
+        h5.modal-title ワークスペースを作る
         button.btn-close(@click="handleClose")
       div.modal-body
         form(@submit.prevent="handleSubmit")
           div.mb-3
-            label.form-label(for="name") 이름
+            label.form-label(for="name") タイトル
             input#name.form-control(v-model="name" required)
   
           div.mb-3
-            label.form-label(for="description") 설명
+            label.form-label(for="description") 説明
             textarea#description.form-control(v-model="description")
   
-          button.btn.btn-success(type="submit") 생성하기
+          button.btn.btn-success(type="submit") 生成する
 </template>
 
 <script setup>
