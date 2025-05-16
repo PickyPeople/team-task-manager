@@ -45,11 +45,11 @@ const chartData = computed(() => ({
 
 const chartOptions = {
   responsive: true,
-  maintainAspectRatio: false,  // ✅ 그래프 높이 정확히 맞추기 위해 필수
+  maintainAspectRatio: false,  
   indexAxis: 'y',
   elements: {
     bar: {
-      barThickness: 10, // ✅ 한 명당 막대 두께 작게
+      barThickness: 10, 
       borderRadius: 4
     }
   },
