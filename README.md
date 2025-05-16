@@ -35,6 +35,9 @@ Vue.js + Ruby on Rails による簡易タスク管理SaaSツール。
 ## 🚀 セットアップ
 
 ```bash
+#.env -> backendの中に
+JWT_SECRET=b97fda7c8ea2289b38ef6ffe3f6c09c1510e44daf1dd9e3e6d2b8f68ba60a97180abc55a88c9a5190532786efe57a34a690a59bdfd4db4cf2248f83078835571
+
 # バックエンド
 cd backend
 bundle install
